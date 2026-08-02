@@ -1,0 +1,284 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -848,
+        -288
+      ],
+      "id": "bdc9f12a-9091-4ef4-b9c4-c0a2203fd76a",
+      "name": "Telegram Trigger",
+      "webhookId": "8b55302c-1b21-4e4d-b6c7-22918ebc961e",
+      "credentials": {
+        "telegramApi": {
+          "id": "GN8i2XbDCaNJ5C7c",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant. Whenever you send an email, you must first find the email of the person you want to send it to by using the \"Get Contacts\" tool.\nThe date and time is {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -480,
+        -384
+      ],
+      "id": "85f52484-6b49-4cc7-ac9c-4e480ef7bdc1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -512,
+        -48
+      ],
+      "id": "5d3d00af-4914-4924-884c-145e98abab3a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "manishchole95@gmail.com",
+          "mode": "list",
+          "cachedResultName": "manishchole95@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        32
+      ],
+      "id": "87ee5b89-4e27-487f-96cf-44dd431c07b3",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AWh0Vka9TX2SN86o",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        32
+      ],
+      "id": "bb3a0ed9-6269-4b76-b0a4-eef9116a8bcc",
+      "name": "Send a message in Gmail",
+      "webhookId": "1819b183-a1f4-4ea6-be65-da810c0b941d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2L36tEAvWwujm2sL",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -48
+      ],
+      "id": "5ed0d7ad-8018-4b23-a66a-e6a2b9df883c",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "s7pFzdztcnKbaSl0",
+          "name": "Groq account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this to get contact information. Read, update and write data to Google Sheets",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xi5qMHMWBUXTqGDq4JYQnp2Ia5TiGaJhFP1DDoJxgOY",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xi5qMHMWBUXTqGDq4JYQnp2Ia5TiGaJhFP1DDoJxgOY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xi5qMHMWBUXTqGDq4JYQnp2Ia5TiGaJhFP1DDoJxgOY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        32
+      ],
+      "id": "d8a9c05a-a391-4b9e-bd05-6fbce7a9d4aa",
+      "name": "Get Contacts",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "irB8jVAHmOY2jc5U",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        -288
+      ],
+      "id": "487720f1-c941-4d60-a426-78fafa36a546",
+      "name": "Send a text message",
+      "webhookId": "d56bbdb0-2e2e-4dae-9076-ede835781967",
+      "credentials": {
+        "telegramApi": {
+          "id": "GN8i2XbDCaNJ5C7c",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "14feaeec-fbd2-4a04-b71e-a949480b6e6c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ef8b09f0951c4e3261db531e04f84bb747f0aa6a098304c99667c22f38c15c53"
+  },
+  "nodeGroups": [],
+  "id": "U000tccN8KKIWhyO",
+  "tags": []
+}
